@@ -22,6 +22,12 @@ idt_flush:
     lidt [eax]
     ret
 
+[global tss_flush]
+tss_flush:
+    mov ax, 0x28
+    ltr ax
+    ret
+
 %macro ISR_NO_ERRCODE 1
 [global isr%1]
 isr%1:
@@ -81,6 +87,7 @@ ISR_NO_ERRCODE 28
 ISR_NO_ERRCODE 29
 ISR_NO_ERRCODE 30
 ISR_NO_ERRCODE 31
+ISR_NO_ERRCODE 128
 IRQ 0, 32;
 IRQ 1, 33;
 IRQ 2, 34;

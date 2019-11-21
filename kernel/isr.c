@@ -1,6 +1,7 @@
 #include "isr.h"
 #include "screen.h"
 #include "utils.h"
+#include "common.h"
 
 handler_t interrupt_handlers[256];
 
@@ -10,22 +11,26 @@ void isr_handler(registers_t regs){
     print_dec(regs.int_no);
     print("\n");
     print("cs:");
-        print_hex(regs.cs);
-        print("\n");
-        print("ds:");
-        print_hex(regs.ds);
-        print("\n");
-        print("ip:");
-        print_hex(regs.eip);
-        print("\n");
-        print("error code:");
-        print_hex(regs.err_code);
-        print("\n");
-    while(1);
-    if(regs.int_no == 13){
-       ;
-    }
-
+    print_hex(regs.cs);
+    print("\n");
+    print("ds:");
+    print_hex(regs.ds);
+    print("\n");
+    print("ip:");
+    print_hex(regs.eip);
+    print("\n");
+    print("error code:");
+    print_hex(regs.err_code);
+    print("\n");
+    
+    if (interrupt_handlers[regs.int_no] != 0)
+   {
+       handler_t handler = interrupt_handlers[regs.int_no];
+       handler(&regs);
+   }
+   else{
+       panic("exception unhandled!\n");
+   }
 
 }
 
@@ -42,7 +47,7 @@ void irq_handler(registers_t regs){
    if (interrupt_handlers[regs.int_no] != 0)
    {
        handler_t handler = interrupt_handlers[regs.int_no];
-       handler(regs);
+       handler(&regs);
    }
 }
 

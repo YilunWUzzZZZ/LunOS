@@ -1,5 +1,6 @@
 #include "types.h"
-#define VIDEO_MEM 0xb8000
+#include "vm.h"
+#define VIDEO_MEM (0xb8000 + KERNELBASE)
 #define MAX_ROWS 25
 #define MAX_COLS 80
 #define WHITE_ON_BLACK 0x0f

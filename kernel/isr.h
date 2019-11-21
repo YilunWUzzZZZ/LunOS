@@ -11,6 +11,6 @@ typedef struct registers
     uint32 eip, cs, eflags, useresp, ss;
 } registers_t;
 
-typedef void (*handler_t)(registers_t);
+typedef void (*handler_t)(registers_t *);
 
 void register_int_handler(uint32, uint8);
